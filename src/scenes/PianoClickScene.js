@@ -90,29 +90,6 @@ export default class PianoClickScene extends Phaser.Scene {
     this.blacks[15] = this.add.image(this.blacks[11].x, this.blacks[11].y + size + spacing, key).setInteractive().setVisible(false)
   }
 
-  // checkVisible() {
-  //   let totalShown = 0
-  //   for (let i = 0; i < 16 ; i++) {
-  //       if (this.blacks[i].visible) {
-  //           totalShown ++;
-  //       }
-  //   }
-  //   return totalShown
-  // }
-
-  // show3Blacks(){
-  //   for(var i = 0; i<3; i++){ 
-  //       if (!this.checkVisible()) {
-  //           for (let i=0 ; i<3 ; i++) {
-  //               let idxShow = Math.floor(Math.random() * 16)
-  //               this.blacks[idxShow].setVisible(true)
-  //           }
-  //       } 
-  //       // let idxHide = Math.floor(Math.random() * 16)
-  //       // this.blacks[idxHide].setVisible(false)
-  //   }
-  // }
-
   isTileVisible(idx) {
     if (this.blacks[idx].visible) {
       return true
