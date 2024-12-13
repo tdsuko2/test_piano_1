@@ -33,11 +33,17 @@ export default class PianoClickScene extends Phaser.Scene {
     this.createWhites(initX, initY, spacing, size, "w")
     this.createBlacks(initX, initY, spacing, size, "b")
 
-    var timedEvent = this.time.addEvent({ delay: 500, callback: this.onEvent, callbackScope: this, loop: true });
+    this.time.addEvent({ delay: 500, callback: this.showRandom3Tiles, callbackScope: this, loop: true });
+  
+    for (let i = 0; i < 16 ; i++) {
+      this.blacks[i].on('pointerdown', () => {
+        this.blacks[i].setVisible(false)
+      })
+    }
   }
 
   update(time) {
-
+    
   }
 
   createWhites(initX, initY, spacing, size, key) {
@@ -63,47 +69,83 @@ export default class PianoClickScene extends Phaser.Scene {
   }
 
   createBlacks(initX, initY, spacing, size, key) {
-    this.blacks[0] = this.add.image(initX, initY, key).setVisible(false)
-    this.blacks[1] = this.add.image(this.blacks[0].x + size + spacing, initY, key).setVisible(false)
-    this.blacks[2] = this.add.image(this.blacks[1].x + size + spacing, initY, key).setVisible(false)
-    this.blacks[3] = this.add.image(this.blacks[2].x + size + spacing, initY, key).setVisible(false)
+    this.blacks[0] = this.add.image(initX, initY, key).setInteractive().setVisible(false)
+    this.blacks[1] = this.add.image(this.blacks[0].x + size + spacing, initY, key).setInteractive().setVisible(false)
+    this.blacks[2] = this.add.image(this.blacks[1].x + size + spacing, initY, key).setInteractive().setVisible(false)
+    this.blacks[3] = this.add.image(this.blacks[2].x + size + spacing, initY, key).setInteractive().setVisible(false)
 
-    this.blacks[4] = this.add.image(this.blacks[0].x, this.blacks[0].y + size + spacing, key).setVisible(false)
-    this.blacks[5] = this.add.image(this.blacks[1].x, this.blacks[1].y + size + spacing, key).setVisible(false)
-    this.blacks[6] = this.add.image(this.blacks[2].x, this.blacks[2].y + size + spacing, key).setVisible(false)
-    this.blacks[7] = this.add.image(this.blacks[3].x, this.blacks[3].y + size + spacing, key).setVisible(false)
+    this.blacks[4] = this.add.image(this.blacks[0].x, this.blacks[0].y + size + spacing, key).setInteractive().setVisible(false)
+    this.blacks[5] = this.add.image(this.blacks[1].x, this.blacks[1].y + size + spacing, key).setInteractive().setVisible(false)
+    this.blacks[6] = this.add.image(this.blacks[2].x, this.blacks[2].y + size + spacing, key).setInteractive().setVisible(false)
+    this.blacks[7] = this.add.image(this.blacks[3].x, this.blacks[3].y + size + spacing, key).setInteractive().setVisible(false)
 
-    this.blacks[8] = this.add.image(this.blacks[4].x, this.blacks[4].y + size + spacing, key).setVisible(false)
-    this.blacks[9] = this.add.image(this.blacks[5].x, this.blacks[5].y + size + spacing, key).setVisible(false)
-    this.blacks[10] = this.add.image(this.blacks[6].x, this.blacks[6].y + size + spacing, key).setVisible(false)
-    this.blacks[11] = this.add.image(this.blacks[7].x, this.blacks[7].y + size + spacing, key).setVisible(false)
+    this.blacks[8] = this.add.image(this.blacks[4].x, this.blacks[4].y + size + spacing, key).setInteractive().setVisible(false)
+    this.blacks[9] = this.add.image(this.blacks[5].x, this.blacks[5].y + size + spacing, key).setInteractive().setVisible(false)
+    this.blacks[10] = this.add.image(this.blacks[6].x, this.blacks[6].y + size + spacing, key).setInteractive().setVisible(false)
+    this.blacks[11] = this.add.image(this.blacks[7].x, this.blacks[7].y + size + spacing, key).setInteractive().setVisible(false)
 
-    this.blacks[12] = this.add.image(this.blacks[8].x, this.blacks[8].y + size + spacing, key).setVisible(false)
-    this.blacks[13] = this.add.image(this.blacks[9].x, this.blacks[9].y + size + spacing, key).setVisible(false)
-    this.blacks[14] = this.add.image(this.blacks[10].x, this.blacks[10].y + size + spacing, key).setVisible(false)
-    this.blacks[15] = this.add.image(this.blacks[11].x, this.blacks[11].y + size + spacing, key).setVisible(false)
+    this.blacks[12] = this.add.image(this.blacks[8].x, this.blacks[8].y + size + spacing, key).setInteractive().setVisible(false)
+    this.blacks[13] = this.add.image(this.blacks[9].x, this.blacks[9].y + size + spacing, key).setInteractive().setVisible(false)
+    this.blacks[14] = this.add.image(this.blacks[10].x, this.blacks[10].y + size + spacing, key).setInteractive().setVisible(false)
+    this.blacks[15] = this.add.image(this.blacks[11].x, this.blacks[11].y + size + spacing, key).setInteractive().setVisible(false)
   }
 
-  checkVisible() {
-    let totalShown = 0
+  // checkVisible() {
+  //   let totalShown = 0
+  //   for (let i = 0; i < 16 ; i++) {
+  //       if (this.blacks[i].visible) {
+  //           totalShown ++;
+  //       }
+  //   }
+  //   return totalShown
+  // }
+
+  // show3Blacks(){
+  //   for(var i = 0; i<3; i++){ 
+  //       if (!this.checkVisible()) {
+  //           for (let i=0 ; i<3 ; i++) {
+  //               let idxShow = Math.floor(Math.random() * 16)
+  //               this.blacks[idxShow].setVisible(true)
+  //           }
+  //       } 
+  //       // let idxHide = Math.floor(Math.random() * 16)
+  //       // this.blacks[idxHide].setVisible(false)
+  //   }
+  // }
+
+  isTileVisible(idx) {
+    if (this.blacks[idx].visible) {
+      return true
+    }
+    return false
+  }
+
+  hidePreviousTiles() {
     for (let i = 0; i < 16 ; i++) {
-        if (this.blacks[i].visible) {
-            totalShown ++;
-        }
+      if (this.blacks[i].visible) {
+          this.blacks[i].setVisible(false)
+      }
     }
-    return totalShown
   }
 
-  onEvent(){
-    for(var i = 0; i<3; i++){ 
-        if (!this.checkVisible()) {
-            for (let i=0 ; i<3 ; i++) {
-                let idxShow = Math.floor(Math.random() * 16)
-                this.blacks[idxShow].setVisible(true)
-            }
-        } 
-        let idxHide = Math.floor(Math.random() * 16)
-        this.blacks[idxHide].setVisible(false)
+  showRandom3Tiles() {
+    this.hidePreviousTiles()
+
+    var tileCount = 0
+    while (tileCount < 3) {
+      let idxShow = Math.floor(Math.random() * 16)
+      if (!this.isTileVisible(idxShow)) {
+        this.blacks[idxShow].setVisible(true)
+        tileCount ++
+      }
     }
-}
+  }
+
+  updateAfterClick(idx) {
+    let idxShow
+    do {
+      idxShow = Math.floor(Math.random() * 16)
+    } while (!this.blacks[idxShow].visible)
+      this.blacks[idxShow].setVisible(true)
+  }
 }
